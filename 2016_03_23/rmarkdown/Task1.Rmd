@@ -1,0 +1,65 @@
+---
+title: "732A90 - Exam - March 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Assignment 1
+
+## 1.1
+
+We can use the inverse CDF method to sample from the distribution. Assuming we have a PDF of the target distribution we can follow the following schema:
+
+1. If the target distribution is a proper distribution (area under curve = 1) go to step 3, otherwise to step 2.
+2. Integrate the function and calculate the area under the curve, lets call this value $\beta$; The normalization factor is then given by $\frac{1}{\beta}$; Multiply the original distribution with $\frac{1}{\beta}$ to get a proper density function.
+3. Integrate the density function to get its primitive function (cumulative distribution function (CDF)).
+4. Calculate the inverse of the CDF.
+5. Sample from the inverse with $u \sim Unif(0, 1)$
+
+
+$$F(x) = \int_{-\infty}^{x} 1.5 \sqrt{s} \ ds = \int_{0}^{x} 1.5 \sqrt{s} \ ds = \left[ s^\frac{3}{2} \right]_0^x = x^\frac{3}{2}$$
+
+Now the inverse can be calculated:
+
+$$F(x)^{-1}: x = y^\frac{3}{2} \\ y = x^\frac{2}{3}$$
+
+We can now sample from this distribution.
+
+```{r}
+# Define the function of the inverse cdf
+inverse_cdf <- function(x) {
+  return(x^(2/3))
+}
+
+# Generate 10000 random values uniform(0, 1) and
+# sample from the inverse cdf
+u <- runif(10000)
+res_11 <- inverse_cdf(u)
+
+# Generate the values of the real distribution
+x <- seq(0.001, 0.999, 0.001)
+y <- 1.5 * sqrt(x)
+
+# Plot the distributions in a histogram
+hist(res_11, freq = FALSE,
+     breaks = 30,
+     xlab = "x", ylab = "Density",
+     main = "Distribution of f(x)",
+     col = "grey")
+
+# Plot the density estimate of the sample (blue) and the true values
+# of the function (red)
+lines(density(res_11), col = "blue", lwd = 2)
+lines(x, y, col = "red", lwd = 2)
+
+# Add a legend
+legend(x = 0, y = 1.5,
+       legend = c("sample", "sample density", "true density"),
+       col = c("grey", "blue", "red"),
+       pch = c(16, 16, 16),
+       cex = 0.8)
+```
+
