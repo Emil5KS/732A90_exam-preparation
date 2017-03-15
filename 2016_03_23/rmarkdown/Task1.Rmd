@@ -1,8 +1,8 @@
 ---
 title: "732A90 - Exam - March 2016"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Assignment 1
 
-## 1.1
+## 1.1 Inverse CDF
 
 We can use the inverse CDF method to sample from the distribution. Assuming we have a PDF of the target distribution we can follow the following schema:
 
