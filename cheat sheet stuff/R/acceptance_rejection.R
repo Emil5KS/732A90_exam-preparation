@@ -49,10 +49,3 @@ acceptance_rejection <- function(maxiter, c, dt, dp, rp) {
     X = X
   )))
 }
-
-test <- acceptance_rejection(maxiter, c, dt, dp, rp)
-
-hist(test$X)
-
-# beta <- rbeta(1000, 1, 2)
-# hist(beta)
