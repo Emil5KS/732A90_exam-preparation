@@ -1,0 +1,70 @@
+---
+title: "732A90 - Exam - Task 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Assignment 1
+
+## Inverse CDF
+
+1. Calculate the normalization constant:
+
+\begin{align}
+P(x) 
+&= \int_0^1 a^x dx\\
+&= \int_0^1 e^{xlog(a)} dx\\
+&= \left[ \frac{1}{log(a)} e^{x log(a)}\right]_0^1 \\
+&= \frac{a - 1}{log(a)} \\
+&=> c = \frac{log(a)}{a - 1}
+\end{align}
+
+2. Calculate the CDF
+
+\begin{align}
+P(y) 
+&= \int_0^y ca^x dx\\
+&= c\int_0^y e^{xlog(a)} dx\\
+&= c\left[ \frac{1}{log(a)} e^{x log(a)}\right]_0^y \\
+&= \frac{c}{log(a)} (e^{ylog(a)} - 1)
+\end{align}
+
+3. Inverse it
+
+\begin{align}
+y = \frac{1}{a-1} (e^{xlog(a)} - 1) \\
+x = \frac{1}{a-1} (e^{ylog(a)} - 1)\\
+\frac{log(x(a-1)+1)}{log(a)} = y
+\end{align}
+
+```{r}
+inverse_cdf <- function(x, a) {
+  log(x * (a - 1) + 1) / log(a)
+}
+
+u <- runif(1000)
+res_11 <- sapply(u, inverse_cdf, a = 0.1)
+
+a <- 0.1
+c <- log(a) / (a-1)
+x <- seq(0.01, 0.99, 0.01)
+y <- a^x * c
+
+hist(res_11, freq = FALSE, breaks = 40,
+     xlim = c(0,1 ), ylim = c(0, 3),
+     xlab = "x", ylab = "Density",
+     main = "Histrogram inverse CDF sampling",
+     col = "grey")
+lines(density(res_11), col = "blue", lwd = 2)
+lines(x, y, col = "red", lwd = 2)
+legend(x = 0.75, y = 3,
+       legend = c("Sampled values", "Sample Density", "Real Values"),
+       col = c("grey", "blue", "red"),
+       pch = c(16, 16, 16),
+       cex = 0.8)
+```
+
+Sampled values look like the values from $p(y)$. The blue line will converge towards the red line if the sample size increases.

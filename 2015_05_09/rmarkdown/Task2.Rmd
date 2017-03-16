@@ -1,0 +1,38 @@
+---
+title: "732A90 - Exam - Task 2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Assignment 2
+
+## 2.1 Implement a fitness function
+
+```{r}
+crossover <- function(X, Y) {
+  return(structure(list(
+    V1 = floor((2*X + Y) / 3),
+    V2 = floor((X + 2*Y) / 3)
+  )))
+}
+
+mutation <- function(X) {
+  return((X*2559 + 107) %% 311)
+}
+
+fitness <- function(X, Y) {
+  n <- length(X)
+  probabilities <- vector("numeric", length = n)
+  
+  for (i in 1:n) {
+    probabilities[i] <- dchisq(X[i], df = Y[i])
+  }
+  
+  minus_ll <- sum(log(probabilities))
+  
+  return(-1/minus_ll)
+}
+```
