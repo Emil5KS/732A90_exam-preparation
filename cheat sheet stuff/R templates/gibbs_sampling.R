@@ -9,17 +9,14 @@ calculate_conditional_probability <- function(i, X, Y, ...) {
   d <- length(X)
   if (i == 1) {
     # i = 1
-    # print("i = 1")
     mean <- (Y[1] + X[2]) / 2
     variance <- sigma_squared / 2
   } else if (i == d) {
     # i = d
-    # print("i = n")
     mean <- (X[d - 1] + Y[d]) / 2
     variance <- sigma_squared / 2
   } else { 
     # i = 2 ... d-1
-    # print("i = 2 ... n - 1")
     mean <- (X[i - 1]+ Y[i] + X[i + 1]) / 3
     variance <- sigma_squared / 3
   }
